@@ -1,26 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Button } from '@mui/material';
+import GeneralsMenu from './components/GeneralsMenu';
+import ComparisonPage from './pages/Compare';
+import GeneralDetails from './components/GeneralDetails';
+import generalsData from './data/generalsData';
+import {General} from './types';
 
-function App() {
+const App: React.FC = () => {
+  const [selectedGeneral, setSelectedGeneral] = useState<General | null>(null);
+  const [showComparisonPage, setShowComparisonPage] = useState(false);
+
+  const handleSelectGeneral = (id: number) => {
+    const general = generalsData.generals.find((g) => g.id === id);
+    setSelectedGeneral(general || null);
+  };
+
+  const handleToggleComparisonPage = () => {
+    setShowComparisonPage(!showComparisonPage);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: showComparisonPage ? 'column' : 'row',
+        margin: 20,
+      }}
+    >
+      {!showComparisonPage && (
+        <div style={{ flex: 1 }}>
+          <GeneralsMenu generals={generalsData.generals} onSelect={handleSelectGeneral} />
+        </div>
+      )}
+      <div style={{ flex: 2 }}>
+        {showComparisonPage ? (
+          <ComparisonPage generals={generalsData.generals} />
+        ) : selectedGeneral ? (
+          <GeneralDetails general={selectedGeneral} />
+        ) : (
+          <p>Select a general from the menu.</p>
+        )}
+      </div>
+      <div style={{ margin: 20 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleToggleComparisonPage}
         >
-          Learn React
-        </a>
-      </header>
+          {showComparisonPage ? 'Back to Details' : 'Go to Comparison'}
+        </Button>
+      </div>
     </div>
   );
-}
+};
 
 export default App;

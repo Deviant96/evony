@@ -1,15 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import reportWebVitals from "./reportWebVitals";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Roboto, sans-serif",
+    fontSize: 16,
+    h1: {
+      fontSize: "2.5rem",
+      fontWeight: 700,
+    },
+    h2: {
+      fontSize: "2rem",
+      fontWeight: 700,
+    },
+    h3: {
+      fontSize: "1.5rem",
+      fontWeight: 700,
+    },
+    // Add more customizations as needed
+  },
+});
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
 
